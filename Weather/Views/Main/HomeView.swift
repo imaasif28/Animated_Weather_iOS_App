@@ -16,11 +16,15 @@ enum BottomSheetPosition: CGFloat, CaseIterable{
 struct HomeView: View {
     @State var bottomSheetPosition: BottomSheetPosition = .middle
     @State var bottomSheetTranslation: CGFloat = BottomSheetPosition.middle.rawValue
-    
+    var bottomSheetTranslationPtorated: CGFloat {
+        (bottomSheetTranslation - BottomSheetPosition.middle.rawValue) / (BottomSheetPosition.top.rawValue - BottomSheetPosition.middle.rawValue)
+    }
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
                 let scnHeight = geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
+                
+                let imageOffset = scnHeight + 36
                 ZStack{
                     Color.background
                         .ignoresSafeArea()
@@ -28,11 +32,13 @@ struct HomeView: View {
                     Image("Background")
                         .resizable()
                         .ignoresSafeArea()
+                        .offset(y: -bottomSheetTranslationPtorated * imageOffset)
                     Image("House")
                         .frame(maxHeight: .infinity,alignment: .top)
                         .padding(.top,257)
+                        .offset(y: -bottomSheetTranslationPtorated * imageOffset)
                     //MARK: Current Weather
-                    VStack(spacing: -10){
+                    VStack(spacing: -10 * (1 - bottomSheetTranslationPtorated )){
                         Text("Montreal")
                             .font(.largeTitle)
                         
@@ -41,10 +47,12 @@ struct HomeView: View {
                         }
                         Spacer()
                     }.padding(.top,51)
+                        .offset(y: -bottomSheetTranslationPtorated * 46)
+                    
                     //MARK: Bottom Sheet
                     
                     BottomSheetView(position:$bottomSheetPosition) {
-                        Text(bottomSheetTranslation.formatted())
+//                        Text(bottomSheetTranslationPtorated.formatted())
                     } content: {
                         ForecastView()
                     }
@@ -52,9 +60,11 @@ struct HomeView: View {
                         bottomSheetTranslation = translation / scnHeight
                     }
 
+                    //MARK: Tab bar
                     TabBar(action:{
                         bottomSheetPosition = .top
                     })
+                    .offset(y: bottomSheetTranslationPtorated * 115)
                     
                 }
             }

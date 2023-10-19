@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct ForecastView: View {
     var bottomSheetTranslationProrated: CGFloat = 1
     @State private var selection = 0
@@ -45,7 +44,7 @@ struct ForecastView: View {
         .backgroundBlur(radius: 25, opaque: true)
         .background(Color.bottomSheetBackground)
         .clipShape(RoundedRectangle(cornerRadius: 44))
-        .innerShaodw(shape: RoundedRectangle(cornerRadius: 44), color: Color.bottomSheetBorderMiddle, lineWidth: 1, offsetX: 0, offsetY: 1, blur: 0, blendMode: .overlay, opacity: 1 - bottomSheetTranslationProrated)
+        .innerShadow(shape: RoundedRectangle(cornerRadius: 44), color: Color.bottomSheetBorderMiddle, lineWidth: 1, offsetX: 0, offsetY: 1, blur: 0, blendMode: .overlay, opacity: 1 - bottomSheetTranslationProrated)
         .overlay {
             // MARK: Bottom Sheet Separator
             Divider()
